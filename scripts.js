@@ -192,7 +192,7 @@ function submitGuess() {
     logDebug(`Guess submitted: "${guess}"`, 'info');
     logDebug(`Target word is: "${TARGET_WORD}"`, 'info');
     // TODO: Call checkGuess(guess, tiles) - we'll implement this next!
-    // checkGuess(guess, tiles);
+    checkGuess(guess, tiles);
     // TODO: Move to next row: increment currentRow, reset currentTile to 0
     currentRow++;
     currentTile = 0;
@@ -212,8 +212,43 @@ function submitGuess() {
 }
 
 // TODO: Implement checkGuess function (the hardest part!)
-// function checkGuess(guess, tiles) {
-//     // Your code here!
-//     // Remember: handle duplicate letters correctly
-//     // Return the result array
-// }
+function checkGuess(guess, tiles) {
+    logDebug(`🔍 Starting analysis for "${guess}"`, 'info');
+    
+    // TODO: Split TARGET_WORD and guess into arrays
+    const target = TARGET_WORD.split('');
+    const guessArray = guess.split('');
+    const result = ['absent', 'absent', 'absent', 'absent', 'absent'];
+    
+    // STEP 1: Find exact matches
+    for (let i = 0; i < 5; i++) {
+        if (guessArray[i] === target[i]) {
+            result[i] = 'correct';
+            // TODO: mark both target[i] and guessArray[i] as used (null)
+            target[i] = null;
+            guessArray[i] = null;
+        }
+    }
+    
+    // STEP 2: Find wrong position matches  
+    for (let i = 0; i < 5; i++) {
+        if (guessArray[i] !== null) { // only check unused letters
+            // TODO: look for guessArray[i] in remaining target letters
+            // TODO: if found, mark as 'present' and set target position to null
+            const index = target.indexOf(guessArray[i]);
+            if (index !== -1) {
+                result[i] = 'present';
+                target[index] = null; // mark target letter as used
+            } 
+        }
+    }
+    
+    // TODO: Apply CSS classes to tiles -- we'll do this in the next step
+    logDebug(`📊 Result array for "${guess}": [${result.join(', ')}]`, 'info');
+    for (let i = 0; i < 5; i++) {
+        tiles[i].classList.remove('correct', 'present', 'absent'); // clear old state
+        tiles[i].classList.add(result[i]); // apply new one
+    }
+
+    return result;
+}
