@@ -123,6 +123,7 @@ function addLetter(letter) {
 
     // TODO: Log success message with position info
     logDebug(`Letter added to row ${currentRow}, position ${currentTile - 1}: "${letter}"`, 'success');
+    logDebug(`Current tile index is now ${currentTile}`, 'info');
 
     // TODO: Log current word progress using getCurrentWord()
     logDebug(`Current word: "${getCurrentWord()}"`, 'info');
@@ -162,15 +163,53 @@ function deleteLetter() {
 
     // TODO: Log what was deleted and from which position
     logDebug(`Letter deleted from row ${currentRow}, position ${currentTile}: "${deletedLetter}"`, 'info');
+    logDebug(`Current tile index is now ${currentTile}`, 'info');
 
     // TODO: Log current word status using getCurrentWord()
     logDebug(`Current word: "${getCurrentWord()}"`, 'info');
 }
 
 // TODO: Implement submitGuess function
-// function submitGuess() {
-//     // Your code here!
-// }
+function submitGuess() {
+    logDebug(`📝 submitGuess() called`, 'info');
+    
+    // TODO: Check if row has exactly 5 letters (currentTile !== 5)
+    // TODO: If not 5 letters, show alert and return early
+    if (currentTile !== 5) {
+        alert("Not enough letters! Please fill all 5 tiles before submitting.");
+        return;
+    }
+    // TODO: Get the current row element using rows[currentRow]
+    const currentRowElement = rows[currentRow];
+    // TODO: Get all tiles in that row using querySelectorAll('.tile')
+    const tiles = currentRowElement.querySelectorAll('.tile');
+    // TODO: Build the guess string by looping through tiles
+    let guess = '';
+    tiles.forEach(tile => {
+        guess += tile.textContent; // add each letter to our word
+    });        
+    // TODO: Log the guess and target word for debugging
+    logDebug(`Guess submitted: "${guess}"`, 'info');
+    logDebug(`Target word is: "${TARGET_WORD}"`, 'info');
+    // TODO: Call checkGuess(guess, tiles) - we'll implement this next!
+    // checkGuess(guess, tiles);
+    // TODO: Move to next row: increment currentRow, reset currentTile to 0
+    currentRow++;
+    currentTile = 0;
+    // TODO: Check win condition: if guess === TARGET_WORD, set gameOver = true
+    if (guess === TARGET_WORD) {
+        gameOver = true;
+        setTimeout(() => alert("Congratulations! You won!"), 500);
+    }
+    // TODO: Check lose condition: if currentRow >= 6, set gameOver = true
+    if (currentRow >= 6) {
+        gameOver = true;
+        setTimeout(() => alert("Game over! You've run out of guesses."), 500);
+    }
+    // TODO: Show appropriate alert for win/lose (use setTimeout for smoother experience)
+    // TODO: Log current game status (won/lost/continuing)
+    logDebug(`Game status: ${gameOver ? (guess === TARGET_WORD ? 'Won' : 'Lost') : 'Continuing'}`, 'info');
+}
 
 // TODO: Implement checkGuess function (the hardest part!)
 // function checkGuess(guess, tiles) {
