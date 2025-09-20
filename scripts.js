@@ -1,5 +1,6 @@
 // ===== GAME STATE VARIABLES =====
-const TARGET_WORD = "WORDS";  // Our secret word for testing
+let WORDS = [];
+let TARGET_WORD = "";
 let currentRow = 0;           // Which row we're filling (0-5)
 let currentTile = 0;          // Which tile in the row (0-4)
 let gameOver = false;         // Is the game finished?
@@ -54,11 +55,24 @@ function getCurrentWord() {
     return word;
 }
 
+async function loadWords() {
+    const response = await fetch("words.txt");
+    const text = await response.text();
+    WORDS = text.split("\n").map(w => w.trim().toUpperCase()).filter(w => w.length === 5);
+    
+    // Pick random word
+    TARGET_WORD = WORDS[Math.floor(Math.random() * WORDS.length)];
+    logDebug(`🎲 New target word is: ${TARGET_WORD}`, 'debug');
+}
+
+
+
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', function() {
     gameBoard = document.querySelector('.game-board');
     rows = document.querySelectorAll('.row');
     debugOutput = document.getElementById('debug-output');
+    loadWords();
     
     logDebug("🎮 Game initialized successfully!", 'success');
     logDebug(`🎯 Target word: ${TARGET_WORD}`, 'info');
@@ -84,13 +98,6 @@ document.addEventListener("keydown", (event) => {
         addLetter(key);
     }
 });
-
-// ===== YOUR CHALLENGE: IMPLEMENT THESE FUNCTIONS =====
-
-// TODO: Add keyboard event listener
-// document.addEventListener("keydown", (event) => {
-//     // Your code here!
-// });
 
 // TODO: Implement addLetter function
 function addLetter(letter) {
