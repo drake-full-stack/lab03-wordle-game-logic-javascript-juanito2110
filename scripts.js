@@ -102,28 +102,70 @@ function addLetter(letter) {
         logDebug("Current row is full! Cannot add more letters.", 'error');
         return;
     }
+
     // TODO: Get the current row element using rows[currentRow]
     const currentRowElement = rows[currentRow];
+
     // TODO: Get all tiles in that row using querySelectorAll('.tile')
     const tiles = currentRowElement.querySelectorAll('.tile');
+
     // TODO: Get the specific tile using tiles[currentTile]
     const currentTileElement = tiles[currentTile];
+
     // TODO: Set the tile's textContent to the letter
     currentTileElement.textContent = letter;
+
     // TODO: Add the 'filled' CSS class to the tile
     currentTileElement.classList.add('filled');
+
     // TODO: Increment currentTile by 1
     currentTile++;
+
     // TODO: Log success message with position info
     logDebug(`Letter added to row ${currentRow}, position ${currentTile - 1}: "${letter}"`, 'success');
+
     // TODO: Log current word progress using getCurrentWord()
     logDebug(`Current word: "${getCurrentWord()}"`, 'info');
 }
 
 // TODO: Implement deleteLetter function  
-// function deleteLetter() {
-//     // Your code here!
-// }
+function deleteLetter() {
+    logDebug(`deleteLetter() called`, 'info');
+    
+    // TODO: Check if there are letters to delete (currentTile <= 0)
+    // TODO: If no letters, log error message and return early
+    if (currentTile <= 0) {
+        logDebug("No letters to delete!", 'error');
+        return;
+    }
+
+    // TODO: Decrement currentTile FIRST (currentTile--)
+    currentTile--;
+
+    // TODO: Get the current row element using rows[currentRow]
+    const currentRowElement = rows[currentRow];
+
+    // TODO: Get all tiles in that row using querySelectorAll('.tile')
+    const tiles = currentRowElement.querySelectorAll('.tile');
+
+    // TODO: Get the specific tile to clear using tiles[currentTile]
+    const tileToClear = tiles[currentTile];
+
+    // TODO: Store the letter being deleted for logging (tile.textContent)
+    const deletedLetter = tileToClear.textContent;
+
+    // TODO: Clear the tile's textContent (set to empty string '')
+    tileToClear.textContent = '';
+
+    // TODO: Remove the 'filled' class from the tile
+    tileToClear.classList.remove('filled');
+
+    // TODO: Log what was deleted and from which position
+    logDebug(`Letter deleted from row ${currentRow}, position ${currentTile}: "${deletedLetter}"`, 'info');
+
+    // TODO: Log current word status using getCurrentWord()
+    logDebug(`Current word: "${getCurrentWord()}"`, 'info');
+}
 
 // TODO: Implement submitGuess function
 // function submitGuess() {
