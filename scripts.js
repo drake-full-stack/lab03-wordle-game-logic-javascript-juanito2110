@@ -65,6 +65,26 @@ document.addEventListener('DOMContentLoaded', function() {
     logDebug("💡 Try typing letters, pressing Backspace, or Enter", 'info');
 });
 
+document.addEventListener("keydown", (event) => {
+    // TODO: Add your code here
+    // Hint: Check if game is over first
+    // Hint: Convert event.key to uppercase
+    // Hint: Handle three cases: BACKSPACE, ENTER, and letters A-Z
+    // Hint: Call the appropriate function for each case
+    if (gameOver) {
+        logDebug("Game is over! Please refresh to play again.", 'warning');
+        return;
+    }
+    const key = event.key.toUpperCase();
+    if (key === "BACKSPACE") {
+        deleteLetter();
+    } else if (key === "ENTER") {
+        submitGuess();
+    } else if (/^[A-Z]$/.test(key)) {
+        addLetter(key);
+    }
+});
+
 // ===== YOUR CHALLENGE: IMPLEMENT THESE FUNCTIONS =====
 
 // TODO: Add keyboard event listener
@@ -73,9 +93,32 @@ document.addEventListener('DOMContentLoaded', function() {
 // });
 
 // TODO: Implement addLetter function
-// function addLetter(letter) {
-//     // Your code here!
-// }
+function addLetter(letter) {
+    logDebug(`🎯 addLetter("${letter}") called`, 'info');
+    
+    // TODO: Check if current row is full (currentTile >= 5)
+    // TODO: If full, log error message and return early
+    if (currentTile >= 5) {
+        logDebug("Current row is full! Cannot add more letters.", 'error');
+        return;
+    }
+    // TODO: Get the current row element using rows[currentRow]
+    const currentRowElement = rows[currentRow];
+    // TODO: Get all tiles in that row using querySelectorAll('.tile')
+    const tiles = currentRowElement.querySelectorAll('.tile');
+    // TODO: Get the specific tile using tiles[currentTile]
+    const currentTileElement = tiles[currentTile];
+    // TODO: Set the tile's textContent to the letter
+    currentTileElement.textContent = letter;
+    // TODO: Add the 'filled' CSS class to the tile
+    currentTileElement.classList.add('filled');
+    // TODO: Increment currentTile by 1
+    currentTile++;
+    // TODO: Log success message with position info
+    logDebug(`Letter added to row ${currentRow}, position ${currentTile - 1}: "${letter}"`, 'success');
+    // TODO: Log current word progress using getCurrentWord()
+    logDebug(`Current word: "${getCurrentWord()}"`, 'info');
+}
 
 // TODO: Implement deleteLetter function  
 // function deleteLetter() {
